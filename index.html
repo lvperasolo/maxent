@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lucas V. Perasolo - Experimenting and sharing as i go">
+    <meta name="author" content="Lucas V. Perasolo">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <title>Lucas V. Perasolo</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='10' r='6' fill='%233a5d23'/%3E%3Crect x='10' y='16' width='4' height='6' fill='%238b5c2a'/%3E%3C/svg%3E">
+</head>
+<body>
+    <main>
+        <div class="container">
+            <header>
+                <h1 class="name">oi, i'm Lucas</h1>
+                <nav class="links" role="navigation" aria-label="Main navigation">
+                    <a href="mailto:l.perasolovicentim@gmail.com" class="link" aria-label="Send email">contact</a>
+                    <span class="separator" aria-hidden="true">·</span>
+                    <a href="https://github.com/lvperasolo" class="link" target="_blank" rel="noopener noreferrer" aria-label="View GitHub profile">github</a>
+                    <span class="separator" aria-hidden="true">·</span>
+                    <a href="https://devpost.com/lvperasolo" class="link" target="_blank" rel="noopener noreferrer" aria-label="View Devpost profile">devpost</a>
+                </nav>
+                <p class="tagline"> experimenting and sharing as i go — somewhere between (ad)ventures, computers and numbers. reach out, if something resonates with you 👋</p>
+            </header>
+
+            <section class="content">
+                <h2 id="projects">projects</h2>
+                <ul role="list" aria-labelledby="projects">
+                    <li>
+                        <a href="https://github.com/lvperasolo/ComprasNet-Public-Procurement-Auction-Dataset_2003-2023" aria-describedby="comprasnet-desc">ComprasNet dataset</a>
+                        <p id="comprasnet-desc">
+                            A Dataset of Public Procurement Auction Results from Brazil’s ComprasNet Platform (2003–2023)
+                        </p>
+                    </li>
+                    <li>
+                        <a href="content/projects/catan-visualizer.html" aria-describedby="catan-desc">CATAN tracker</a>
+                        <p id="catan-desc">
+                            Tracking the rise and fall of CATAN empires
+                        </p>
+                    </li>
+                </ul>
+     
+                <!-- <hr aria-hidden="true"> -->
+
+                <h2 id="archives">echo these</h2>
+                <ul class="writings-list" id="archives-list"></ul>
+                <script>
+                const writings = [
+                  {
+                    title: "good stuff",
+                    file: "good_stuff.md",
+                    date: "Jul 2025"
+                  },
+                  {
+                    title: "oi mundo",
+                    file: "oi_mundo.md",
+                    date: "Jan 2025"
+                  }
+                ];
+                writings.forEach(entry => {
+                  const li = document.createElement('li');
+                  li.innerHTML = `<a href="content/writings/template.html?content=${entry.file}">${entry.title}</a>
+                                  <span class="meta">${entry.date}</span>`;
+                  document.getElementById('archives-list').appendChild(li);
+                });
+                </script>
+            </section>
+            <hr aria-hidden="true">
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Lucas V. Perasolo</p>
+            <nav class="links" role="navigation" aria-label="Legal navigation">
+                <a href="content/legal/privacy-policy.html" class="link">privacy</a>
+                <span class="separator" aria-hidden="true">·</span>
+                <a href="content/legal/data-terms.html" class="link">data terms</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const focusableElements = document.querySelectorAll('a, button, [tabindex="0"]');
+            focusableElements.forEach(element => {
+                element.addEventListener('focus', function() {
+                    this.setAttribute('data-focus-visible', 'true');
+                });
+                
+                element.addEventListener('blur', function() {
+                    this.removeAttribute('data-focus-visible');
+                });
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.activeElement.blur();
+                }
+            });
+            
+            const links = document.querySelectorAll('a[href^="content/"]');
+            links.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    if (!this.dataset.preloaded) {
+                        const preloadLink = document.createElement('link');
+                        preloadLink.rel = 'prefetch';
+                        preloadLink.href = this.href;
+                        document.head.appendChild(preloadLink);
+                        this.dataset.preloaded = 'true';
+                    }
+                }, { once: true });
+            });
+        });
+    </script>
+</body>
+</html> 

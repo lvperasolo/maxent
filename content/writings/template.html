@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/writing.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <nav class="links">
+                <a href="../../" class="link">← back home</a>
+            </nav>
+
+            <section class="writing-content">
+                <article id="content">
+                    <noscript>
+                        <p>This page requires JavaScript to render content.</p>
+                    </noscript>
+                </article>
+            </section>
+        </div>
+    </main>
+    <script defer>
+    window.addEventListener('DOMContentLoaded', function() {
+        const params = new URLSearchParams(window.location.search);
+        const content = params.get('content');
+        const container = document.getElementById('content');
+
+        if (!content) {
+            container.textContent = "No content specified.";
+            return;
+        }
+
+        fetch(content)
+            .then(response => {
+                if (!response.ok) throw new Error("File not found");
+                return response.text();
+            })
+            .then(text => {
+                if (content.endsWith('.md')) {
+                    container.innerHTML = marked.parse(text);
+                } else if (content.endsWith('.ipynb')) {
+                    let notebook;
+                    try {
+                        notebook = JSON.parse(text);
+                    } catch (e) {
+                        container.textContent = "Invalid notebook format.";
+                        return;
+                    }
+                    let html = '';
+                    for (const cell of notebook.cells) {
+                        if (cell.cell_type === 'markdown') {
+                            html += marked.parse(cell.source.join(''));
+                        } else if (cell.cell_type === 'code') {
+                            html += '<pre><code>';
+                            html += cell.source.map(line => line.replace(/</g, "&lt;").replace(/>/g, "&gt;")).join('');
+                            html += '</code></pre>';
+                            // Optionally, render outputs (text only, for speed)
+                            if (cell.outputs) {
+                                for (const output of cell.outputs) {
+                                    if (output.output_type === 'stream' && output.text) {
+                                        html += '<pre>' + output.text.join('') + '</pre>';
+                                    } else if ((output.output_type === 'execute_result' || output.output_type === 'display_data') && output.data && output.data['text/plain']) {
+                                        html += '<pre>' + output.data['text/plain'].join('') + '</pre>';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    container.innerHTML = html;
+                } else {
+                    container.textContent = "Unsupported file type.";
+                }
+            })
+            .catch(err => {
+                container.textContent = "Error loading content: " + err.message;
+            });
+    });
+    </script>
+</body>
+</html> 
