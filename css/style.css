@@ -102,6 +102,13 @@ li {
     padding-left: 0;
 }
 
+/* Specific styling for writings list items with meta dates */
+.writings-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
 li a {
     color: var(--text);
     text-decoration: none;
@@ -126,8 +133,8 @@ li p {
     color: var(--text-lighter);
     font-size: 0.85rem;
     font-weight: 400;
-    margin-left: 1rem;
     font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
 }
 
 /* Dividers */
@@ -211,9 +218,12 @@ a:focus-visible {
         margin-bottom: 1.25rem;
     }
     
+    .writings-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
     .meta {
-        display: block;
-        margin-left: 0;
         margin-top: 0.25rem;
     }
     
